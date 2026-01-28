@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gönül Alma</title>
+
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      padding: 16px;
+      overflow: hidden;
+    }
+
+    .card {
+      background: white;
+      padding: 24px 20px;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 360px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      z-index: 2;
+    }
+
+    h1 { font-size: 20px; margin-bottom: 8px; }
+    p { font-size: 14px; margin-bottom: 18px; color: #444; }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    button {
+      flex: 1;
+      min-width: 130px;
+      border: none;
+      color: white;
+      padding: 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .btn-yes { background: #ff6b6b; }
+    .btn-no { background: #6c757d; }
+
+    .message {
+      margin-top: 16px;
+      font-size: 14px;
+      color: #333;
+      min-height: 40px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 70px;
+      padding: 10px;
+      border-radius: 12px;
+      border: 1px solid #ddd;
+      font-size: 14px;
+      resize: none;
+      margin-top: 16px;
+    }
+
+    .send {
+      margin-top: 10px;
+      width: 100%;
+      background: #4caf50;
+      border: none;
+      color: white;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .thanks {
+      margin-top: 10px;
+      font-size: 13px;
+      color: #2e7d32;
+    }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.45);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 5;
+    }
+
+    .modal {
+      background: #fff;
+      border-radius: 16px;
+      padding: 20px;
+      width: 90%;
+      max-width: 320px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+    }
+
+    .modal button {
+      background: #ff6b6b;
+      margin-top: 10px;
+    }
+
+    .flower {
+      position: fixed;
+      top: -10px;
+      font-size: 20px;
+      animation: fall 3.5s linear forwards;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0.2;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <h1>💌 Sana Bir Şey Söylemek İstiyorum</h1>
+    <p>Bugün biraz kırdıysam gerçekten özür dilerim…</p>
+
+    <div class="buttons">
+      <button class="btn-yes" onclick="acModal(true)">💖 Barışalım</button>
+      <button class="btn-no" onclick="acModal(false)">😔 Hâlâ Kızgınım</button>
+    </div>
+
+    <div class="message" id="mesaj"></div>
+
+    <textarea id="cevap" placeholder="Bana bir cevap yazar mısın…"></textarea>
+    <button class="send" onclick="gonder()">💬 Cevabı Gönder</button>
+
+    <div class="thanks" id="tesekkur"></div>
+  </div>
+
+  <div class="overlay" id="overlay">
+    <div class="modal">
+      <p id="modalText"></p>
+      <button onclick="kapatModal()">Tamam</button>
+    </div>
+  </div>
+
+  <script>
+    const baris = [
+      "Seni kaybetmek istemiyorum 🤍",
+      "Kalbim senden yana 🌿",
+      "Barışmak isterim ama karar senin 🫶"
+    ];
+
+    const naz = [
+      "Seni anlıyorum 🤍",
+      "Bekleyebilirim 🌱",
+      "Ne zaman istersen konuşuruz 🫂"
+    ];
+
+    function acModal(secim) {
+      const text = secim
+        ? baris[Math.floor(Math.random() * baris.length)]
+        : naz[Math.floor(Math.random() * naz.length)];
+
+      document.getElementById("modalText").innerText = text;
+      document.getElementById("mesaj").innerText = text;
+      document.getElementById("overlay").style.display = "flex";
+
+      if (secim) cicek();
+    }
+
+    function kapatModal() {
+      document.getElementById("overlay").style.display = "none";
+    }
+
+    function gonder() {
+      const val = document.getElementById("cevap").value.trim();
+      if (!val) {
+        document.getElementById("tesekkur").innerText =
+          "Bir şeyler yazarsan çok sevinirim 🤍";
+        return;
+      }
+      document.getElementById("tesekkur").innerText =
+        "Okudum… teşekkür ederim 🤍";
+      document.getElementById("cevap").value = "";
+      cicek();
+    }
+
+    function cicek() {
+      const e = ["🌸","🌼","🌺","💐"];
+      for (let i = 0; i < 15; i++) {
+        const f = document.createElement("div");
+        f.className = "flower";
+        f.innerText = e[Math.floor(Math.random() * e.length)];
+        f.style.left = Math.random() * 100 + "vw";
+        document.body.appendChild(f);
+        setTimeout(() => f.remove(), 3500);
+      }
+    }
+  </script>
+</body>
+</html>
